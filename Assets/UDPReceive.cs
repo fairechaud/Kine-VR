@@ -44,13 +44,10 @@ public class UDPReceive : MonoBehaviour {
     // init
     private void init()
     {
-        // Endpunkt definieren, von dem die Nachrichten gesendet werden.
-        //print("UDPSend.init()");
        
         // define port
         port = 10000;
  
-        // status
         
         receiveThread = new Thread(new ThreadStart(ReceiveData));
         receiveThread.IsBackground = true;
@@ -67,21 +64,16 @@ public class UDPReceive : MonoBehaviour {
         {
              try
             {
-                // Bytes empfangen.
                 IPEndPoint anyIP = new IPEndPoint(IPAddress.Any, 0);
                 byte[] data = client.Receive(ref anyIP);
  
-                // Bytes mit der UTF8-Kodierung in das Textformat kodieren.
                 string text = Encoding.UTF8.GetString(data);
  
-                // Den abgerufenen Text anzeigen.
-                print(">> " + text);
+                // print(">> " + text);
                
-                // latest UDPpacket
                 lastReceivedUDPPacket=text;
                
-                // ....
-                allReceivedUDPPackets=allReceivedUDPPackets+text;
+                // allReceivedUDPPackets=allReceivedUDPPackets+text;
                
             }
             catch (Exception err)
@@ -90,7 +82,4 @@ public class UDPReceive : MonoBehaviour {
             }
         }
     }
-   
-    // getLatestUDPPacket
-    // cleans up the rest
 }

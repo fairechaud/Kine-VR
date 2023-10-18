@@ -17,6 +17,7 @@ public class AngleCalculations : MonoBehaviour
     bool testArmL = false;
     bool testHead = false;
     bool calibTrackersRecorded = false;
+
     RigidPose trackerChest;
     RigidPose calibTrackerChest;
     RigidPose chest;
@@ -59,7 +60,7 @@ public class AngleCalculations : MonoBehaviour
     Vector3 vecElbowRForTheta2;
     Int16 theta1R;
     Int16 theta2R;
-    Int16 theta2Rmod;
+    
     Int16 theta3R;
     Int16 theta4R;
     Matrix4x4 theta4R_auxMat;
@@ -214,17 +215,19 @@ public class AngleCalculations : MonoBehaviour
     }
     void calculate_theta_2_R()
     {
-        refVecPlusZ = chest.rot*(-refVecPlusZFixed);
-        refVecPlusZ.y = 0;
-        vecElbowRForTheta2 = vecElbowR;
-        vecElbowRForTheta2 = chest.rot*vecElbowRForTheta2;
-        vecElbowRForTheta2.y = 0;
+                     //lógica de dibujo de vectores para comparar ángulos
+                    refVecPlusZ = chest.rot*(-refVecPlusZFixed);
+                    refVecPlusZ.y = 0;
+                    vecElbowRForTheta2 = vecElbowR;
+                    vecElbowRForTheta2 = chest.rot*vecElbowRForTheta2;
+                    vecElbowRForTheta2.y = 0; 
+                   
 
         // spRef.position = refVecPlusZ;
         // spComp.position = vecElbowRForTheta2;
         
-    //theta2R = Convert.ToInt16(Vector3.Angle(refVecPlusZ,vecElbowRForTheta2));
-        theta2R = Convert.ToInt16(theta2ShoulderR_chest.rot.eulerAngles.y);
+    theta2R = Convert.ToInt16(Vector3.Angle(refVecPlusZ,vecElbowRForTheta2));
+        // theta2R = Convert.ToInt16(theta2ShoulderR_chest.rot.eulerAngles.z); //lógica de ángulos de Euler para apertura de theta 2 <- estable
         // if (theta1R<20 && theta2R<20)
         // {
         //     theta2R = 10;
@@ -268,12 +271,6 @@ public class AngleCalculations : MonoBehaviour
     
     public Roles myRoles;
 
-    void Awake()
-    {
-        string myLoadedRoles = JsonFileReader.LoadJsonAsResource("Roles/config.json");
-        myRoles = JsonUtility.FromJson<Roles>(myLoadedRoles);
-        //serialNums = serialNumbers.getSerialNumbers();
-    }
     void Start()
     {
         //client.Connect(new IPEndPoint(IPAddress.Parse("192.168.0.177"),8080));
@@ -288,6 +285,11 @@ public class AngleCalculations : MonoBehaviour
         // //     //TO DO: Archivo .json tendra un registro arbitrario de los numeros de serie, los roles que ocuparan y un ID para cada tracker
         // //     //La idea es facilitar el reconocimiento
 
+
+        //Probar con headset para asignación dinámica de trackers
+                // string myLoadedRoles = JsonFileReader.LoadJsonAsResource("Roles/config.json");
+                // myRoles = JsonUtility.FromJson<Roles>(myLoadedRoles);
+                //serialNums = serialNumbers.getSerialNumbers();
         
         // }
         spScale = 0.1f;
